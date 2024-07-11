@@ -38,10 +38,23 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentDto> findAllDepartments() {
 
-        List<DepartmentDto> departmentDtoList = departmentRepository.findAll().stream()
+        return departmentRepository.findAll().stream()
                 .map(departmentEntity -> DepartmentMapper.mapToDepartmentDto(departmentEntity))
                 .collect(Collectors.toList());
+    }
 
-        return departmentDtoList;
+    @Override
+    public DepartmentDto updateDepartment(DepartmentDto updatedDepartmentDto, Long departmentId) {
+
+        DepartmentEntity departmentEntity = departmentRepository.findById(departmentId).orElseThrow(() -> new ResourceNotFoundException("No " +
+                "department with the id: " + departmentId + " could be found"));
+
+        departmentEntity.setDepartmentDescription(updatedDepartmentDto.getDepartmentDescription());
+        departmentEntity.setDepartmentName(updatedDepartmentDto.getDepartmentName());
+
+        DepartmentEntity savedDepartment = departmentRepository.save(departmentEntity);
+
+        return DepartmentMapper.mapToDepartmentDto(savedDepartment);
     }
 }
+

@@ -1,7 +1,6 @@
 package FS_project.ems.controller;
 
 import FS_project.ems.dto.DepartmentDto;
-import FS_project.ems.dto.EmployeeDto;
 import FS_project.ems.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,5 +35,11 @@ public class DepartmentController {
         List<DepartmentDto> allDepartments = departmentService.findAllDepartments();
 
         return ResponseEntity.ok(allDepartments);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("id") Long departmentId,
+                                                          @RequestBody DepartmentDto departmentDto) {
+        return ResponseEntity.ok(departmentService.updateDepartment(departmentDto, departmentId));
     }
 }
