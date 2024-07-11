@@ -1,11 +1,14 @@
 package FS_project.ems.controller;
 
 import FS_project.ems.dto.DepartmentDto;
+import FS_project.ems.dto.EmployeeDto;
 import FS_project.ems.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -26,5 +29,12 @@ public class DepartmentController {
 
         DepartmentDto departmentById = departmentService.findDepartmentById(departmentId);
         return ResponseEntity.ok(departmentById);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DepartmentDto>> findAllDepartments() {
+        List<DepartmentDto> allDepartments = departmentService.findAllDepartments();
+
+        return ResponseEntity.ok(allDepartments);
     }
 }

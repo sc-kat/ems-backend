@@ -9,7 +9,8 @@ import FS_project.ems.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,5 +33,15 @@ public class DepartmentServiceImpl implements DepartmentService {
                 new ResourceNotFoundException("No " +
                 "department with the id: " + departmentId + " could be found"));
         return DepartmentMapper.mapToDepartmentDto(departmentEntity);
+    }
+
+    @Override
+    public List<DepartmentDto> findAllDepartments() {
+
+        List<DepartmentDto> departmentDtoList = departmentRepository.findAll().stream()
+                .map(departmentEntity -> DepartmentMapper.mapToDepartmentDto(departmentEntity))
+                .collect(Collectors.toList());
+
+        return departmentDtoList;
     }
 }
