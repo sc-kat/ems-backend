@@ -13,4 +13,6 @@ public interface DepartmentService {
      List<DepartmentDto> findAllDepartments();
 
      DepartmentDto updateDepartment(DepartmentDto updatedDepartmentDto, Long departmentId);
+
+     void deleteDepartment(Long departmentId);
 }
