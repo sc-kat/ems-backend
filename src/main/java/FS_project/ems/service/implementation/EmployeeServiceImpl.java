@@ -7,7 +7,6 @@ import FS_project.ems.mapper.EmployeeMapper;
 import FS_project.ems.repository.EmployeeRepository;
 import FS_project.ems.service.EmployeeService;
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto getEmployeeById(Long employeeId) {
         EmployeeEntity employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Employee is not exists with given id : " + employeeId));
+                        new ResourceNotFoundException("Employee with id : " + employeeId + " doesn't exist"));
 
         return EmployeeMapper.mapToEmployeeDto(employee);
     }
@@ -47,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto updateEmployee(Long employeeId, EmployeeDto updatedEmployee) {
 
         EmployeeEntity employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResourceNotFoundException("Employee is not exists with given id: " + employeeId)
+                () -> new ResourceNotFoundException("Employee with id : " + employeeId + " doesn't exist")
         );
 
         employee.setFirstName(updatedEmployee.getFirstName());
@@ -63,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Long employeeId) {
 
         EmployeeEntity employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResourceNotFoundException("Employee is not exists with given id: " + employeeId)
+                () -> new ResourceNotFoundException("Employee with id : " + employeeId + " doesn't exist")
         );
 
         employeeRepository.deleteById(employeeId);
