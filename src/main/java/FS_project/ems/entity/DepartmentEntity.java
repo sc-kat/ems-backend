@@ -24,4 +24,7 @@ public class DepartmentEntity {
     @Column(name = "department_description")
     private String departmentDescription;
 
+//    @OneToMany
+//    private EmployeeEntity employeeEntity;
+
 }

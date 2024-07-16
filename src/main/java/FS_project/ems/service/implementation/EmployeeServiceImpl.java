@@ -1,9 +1,11 @@
 package FS_project.ems.service.implementation;
 
 import FS_project.ems.dto.EmployeeDto;
+import FS_project.ems.entity.DepartmentEntity;
 import FS_project.ems.entity.EmployeeEntity;
 import FS_project.ems.exception.ResourceNotFoundException;
 import FS_project.ems.mapper.EmployeeMapper;
+import FS_project.ems.repository.DepartmentRepository;
 import FS_project.ems.repository.EmployeeRepository;
 import FS_project.ems.service.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -17,11 +19,19 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
+    private DepartmentRepository departmentRepository;
 
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
 
-        EmployeeEntity employee = EmployeeMapper.mapToEmployee(employeeDto);
+        EmployeeEntity employee = EmployeeMapper.mapToEmployeeEntity(employeeDto);
+
+        DepartmentEntity department = departmentRepository.findById(employeeDto.getDepartmentId()).orElseThrow(() ->
+                new ResourceNotFoundException("The department with id: " + employeeDto.getDepartmentId()
+                        + "cannot be found"));
+
+        employee.setDepartment(department);
+
         EmployeeEntity savedEmployee = employeeRepository.save(employee);
         return EmployeeMapper.mapToEmployeeDto(savedEmployee);
     }
@@ -38,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDto> getAllEmployees() {
         List<EmployeeEntity> employees = employeeRepository.findAll();
-        return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
+        return employees.stream().map(EmployeeMapper::mapToEmployeeDto)
                 .collect(Collectors.toList());
     }
 
@@ -53,9 +63,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setLastName(updatedEmployee.getLastName());
         employee.setEmail(updatedEmployee.getEmail());
 
-        EmployeeEntity updatedEmployeeObj = employeeRepository.save(employee);
+        DepartmentEntity department = departmentRepository.findById(updatedEmployee.getDepartmentId()).orElseThrow(() ->
+                new ResourceNotFoundException("The department with id: " + updatedEmployee.getDepartmentId()
+                        + "cannot be found"));
 
-        return EmployeeMapper.mapToEmployeeDto(updatedEmployeeObj);
+        employee.setDepartment(department);
+        EmployeeEntity savedEmployee = employeeRepository.save(employee);
+
+
+        return EmployeeMapper.mapToEmployeeDto(savedEmployee);
     }
 
     @Override

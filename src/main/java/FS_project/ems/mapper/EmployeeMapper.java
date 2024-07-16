@@ -11,16 +11,19 @@ public class EmployeeMapper {
                 employeeEntity.getId(),
                 employeeEntity.getFirstName(),
                 employeeEntity.getLastName(),
-                employeeEntity.getEmail()
+                employeeEntity.getEmail(),
+                employeeEntity.getDepartment().getId()
         );
     }
 
-    public static EmployeeEntity mapToEmployee(EmployeeDto employeeDto){
-        return new EmployeeEntity(
-                employeeDto.getId(),
-                employeeDto.getFirstName(),
-                employeeDto.getLastName(),
-                employeeDto.getEmail()
-        );
+    public static EmployeeEntity mapToEmployeeEntity(EmployeeDto employeeDto){
+        EmployeeEntity employee = new EmployeeEntity();
+
+        employee.setId(employeeDto.getId());
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastName(employeeDto.getLastName());
+        employee.setEmail(employeeDto.getEmail());
+
+        return employee;
     }
 }
